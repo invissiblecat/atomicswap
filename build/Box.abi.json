@@ -1,0 +1,83 @@
+{
+	"ABI version": 2,
+	"header": ["time", "expire"],
+	"functions": [
+		{
+			"name": "constructor",
+			"inputs": [
+				{"name":"creator","type":"address"},
+				{"name":"recipient","type":"address"},
+				{"name":"amount","type":"uint128"},
+				{"name":"secretHash","type":"uint256"},
+				{"name":"timelock","type":"uint32"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "toRecipient",
+			"inputs": [
+				{"name":"maybeSecret","type":"bytes"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "toCreator",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getSecret",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"bytes"}
+			]
+		},
+		{
+			"name": "getBoxInfo",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"recipient","type":"address"},
+				{"name":"creator","type":"address"},
+				{"name":"amount","type":"uint128"},
+				{"name":"secretHash","type":"uint256"},
+				{"name":"timelock","type":"uint32"}
+			]
+		},
+		{
+			"name": "secretToHash",
+			"inputs": [
+				{"name":"secret","type":"bytes"}
+			],
+			"outputs": [
+				{"name":"value0","type":"uint256"}
+			]
+		},
+		{
+			"name": "_id",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"_id","type":"uint32"}
+			]
+		},
+		{
+			"name": "_recipient",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"_recipient","type":"address"}
+			]
+		}
+	],
+	"data": [
+		{"key":1,"name":"_id","type":"uint32"}
+	],
+	"events": [
+	]
+}

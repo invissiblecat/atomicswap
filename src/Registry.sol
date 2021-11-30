@@ -10,7 +10,7 @@ import "./Fees.sol";
 
 contract Registry is BoxResolver {
 
-    uint32 _deployedBoxesCounter = 0;
+    uint32 public _deployedBoxesCounter = 0;
     bool _inited = false;
 
     function init(
@@ -27,12 +27,12 @@ contract Registry is BoxResolver {
 
     function deployBox (address recipient, uint128 amount, uint256 secretHash, uint32 timelock) public returns (address newBox){
         require(msg.sender != address(0), Errors.INVALID_CALLER);
-        require (msg.value > Fees.DEPLOY, Errors.INVALID_VALUE);
+        require (msg.value >= amount * 1 ton, Errors.INVALID_VALUE);
 
         TvmCell state = _buildBoxState(address(this), _deployedBoxesCounter);
         newBox = new Box 
-            {stateInit: state, value: Fees.DEPLOY}
-            (recipient, amount, secretHash, timelock);
+            {stateInit: state, value: amount * 1 ton}
+            (msg.sender, recipient, amount * 1 ton, secretHash, timelock);
         
         _deployedBoxesCounter++;
 

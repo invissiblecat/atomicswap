@@ -5,18 +5,16 @@ import './Box.sol';
 contract BoxResolver {
     TvmCell _codeBox;
 
-    // function resolveLLCWallet(address addrAuthor, uint32 id) public view returns (address addrLLCWallet) {
-    //     TvmCell state = _buildLLCWalletState(addrAuthor, id);
-    //     uint256 hashState = tvm.hash(state);
-    //     addrLLCWallet = address.makeAddrStd(0, hashState);
-    // }
+    function resolveBox(address addrAuthor, uint32 id) public view returns (address addrBox) {
+        TvmCell state = _buildBoxState(addrAuthor, id);
+        uint256 hashState = tvm.hash(state);
+        addrBox = address.makeAddrStd(0, hashState);
+    }
 
-    // function resolveLLCWalletCodeHash(address addrAuthor) external view returns (uint256 codeHashLLCWallet) {
-    //     TvmCell code = _buildLLCWalletCode(addrAuthor);
-    //     codeHashLLCWallet = tvm.hash(code);
-    // }
-
-
+    function resolveBoxCodeHash(address addrAuthor) external view returns (uint256 codeHashBox) {
+        TvmCell code = _buildBoxCode(addrAuthor);
+        codeHashBox = tvm.hash(code);
+    }
 
     function _buildBoxState(address addrAuthor, uint32 id) internal view returns (TvmCell) {
         return tvm.buildStateInit({

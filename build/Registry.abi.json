@@ -23,12 +23,22 @@
 			]
 		},
 		{
-			"name": "secretToHash",
+			"name": "resolveBox",
 			"inputs": [
-				{"name":"secret","type":"bytes"}
+				{"name":"addrAuthor","type":"address"},
+				{"name":"id","type":"uint32"}
 			],
 			"outputs": [
-				{"name":"value0","type":"uint256"}
+				{"name":"addrBox","type":"address"}
+			]
+		},
+		{
+			"name": "resolveBoxCodeHash",
+			"inputs": [
+				{"name":"addrAuthor","type":"address"}
+			],
+			"outputs": [
+				{"name":"codeHashBox","type":"uint256"}
 			]
 		},
 		{
@@ -36,6 +46,14 @@
 			"inputs": [
 			],
 			"outputs": [
+			]
+		},
+		{
+			"name": "_deployedBoxesCounter",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"_deployedBoxesCounter","type":"uint32"}
 			]
 		}
 	],

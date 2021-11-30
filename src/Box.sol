@@ -3,41 +3,44 @@ pragma ton-solidity >= 0.47.0;
 pragma AbiHeader expire;
 pragma AbiHeader time;
 
-import "./BoxResolver.sol";
+import "./Hashing.sol";
 
 import "./Errors.sol";
 import "./Fees.sol";
 
-contract Box is BoxResolver {
+contract Box is Hashing {
     uint32 public static _id;   
+    address _addrAuthor;
 
     address _creator;
-    address _recipient;
+    address public _recipient;
     uint128 _amount;
     uint256 _secretHash;
     uint32 _timelock;
 
     string _secret;
 
-    constructor(address recipient, uint128  amount, uint256 secretHash, uint32 timelock) public{
+    constructor(address creator, address recipient, uint128  amount, uint256 secretHash, uint32 timelock) public{
         optional(TvmCell) oSalt = tvm.codeSalt(tvm.code());
         require(oSalt.hasValue());
         (address addrAuthor) = oSalt.get().toSlice().decode(address);
         require(addrAuthor == msg.sender, Errors.INVALID_CALLER);
         require(addrAuthor != address(0), Errors.INVALID_CALLER);
 
-        _creator = msg.sender;
+        _addrAuthor = addrAuthor;
+
+        _creator = creator;
         _recipient = recipient;
         _amount = amount;
         _secretHash = secretHash;
         _timelock = now + timelock;
     }
 
-    function toRecipient(string maybeSecret) public {
-        require (msg.sender == _recipient, Errors.INVALID_CALLER);
+    function toRecipient(bytes maybeSecret) public {
+        // require (msg.sender == _recipient, Errors.INVALID_CALLER);
         require (_secretHash == secretToHash(maybeSecret), Errors.WRONG_SECRET);
-
-        msg.sender.transfer(_amount, false, 3);
+    
+        _recipient.transfer(_amount, false, 128);
         _secret = maybeSecret;
          
     }
