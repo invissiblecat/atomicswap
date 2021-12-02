@@ -37,11 +37,12 @@ Wallet.call_method(
                 }
                 )
 
-ts4.dump_queue()
+# ts4.dump_queue()
 ts4.dispatch_messages()
 
 deployedBoxesCounter = Registry.call_getter("_deployedBoxesCounter")
 print (green("Deployed boxes: {}".format(deployedBoxesCounter)))
+
 
 addressBox1 = Registry.call_getter(
         "resolveBox", {
@@ -52,6 +53,8 @@ addressBox1 = Registry.call_getter(
 Box1 = ts4.BaseContract("Box", ctor_params=None, address=addressBox1)
 
 print (yellow("Box 1 successfully deployed. Balance: {}".format(Box1.balance)))
+
+secretHashGetted = Box1.call_getter("getBoxInfo")[3]
 
 print(yellow("\nDeploying box 2."))
 Wallet1.call_method(
@@ -64,7 +67,7 @@ Wallet1.call_method(
                     "payload":ts4.encode_message_body(
                         "Registry", "deployBox", {"recipient": Wallet.address, 
                                                 "amount": 4,
-                                                "secretHash": secretHash,
+                                                "secretHash": secretHashGetted,
                                                 "timelock": 30})
                 }
                 )
@@ -82,6 +85,9 @@ addressBox2 = Registry.call_getter(
 Box2 = ts4.BaseContract("Box", ctor_params=None, address=addressBox2)
 
 print (yellow("Box 2 successfully deployed. Balance: {}".format(Box2.balance)))
+getSecret = Box2.call_getter("getSecret")
+print (green("Trying to get secret from box2: {}".format(getSecret)))
+
 
 Box1Recipient = Box1.call_getter("_recipient")
 Box2Recipient = Box2.call_getter("_recipient")
@@ -90,17 +96,24 @@ Box2Recipient = Box2.call_getter("_recipient")
 # print(red("Box2Recipient: {}".format(Box2Recipient)))
 # print(red("Wallet addr: {}".format(Wallet.address)))
 # print(red("Wallet1 addr: {}".format(Wallet1.address)))
+
 print(yellow("\nCreator of box1 takes money from box2"))
 print(green("Creator of box 1 balance before: {}".format(Wallet.balance)))
+
 Box2.call_method("toRecipient", {"maybeSecret":"secret"})
-ts4.dump_queue()
+# ts4.dump_queue()
 ts4.dispatch_messages()
+
 print(green("Creator of box 1 balance after: {}".format(Wallet.balance)))
 
 print(yellow("\nCreator of box2 takes money from box1"))
 getSecret = Box2.call_getter("getSecret")
-print (green("Get secret from box2: {}".format(getSecret)))
+print (green("Trying to get secret from box2: {}".format(getSecret)))
+
 print(green("Creator of box 2 balance before: {}".format(Wallet1.balance)))
+
 Box1.call_method("toRecipient", {"maybeSecret":getSecret})
+# ts4.dump_queue()
 ts4.dispatch_messages()
+
 print(green("Creator of box 2 balance after: {}".format(Wallet1.balance)))

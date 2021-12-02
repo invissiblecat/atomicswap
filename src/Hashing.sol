@@ -1,9 +1,8 @@
-pragma solidity >= 0.5.0;
+pragma ton-solidity >= 0.47.0;
 
 contract Hashing {
 
     function secretToHash(bytes secret) public returns (uint256) {
-        tvm.accept();
         return tvm.hash(secret);
     }
 
