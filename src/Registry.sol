@@ -27,7 +27,7 @@ contract Registry is BoxResolver {
 
     function deployBox (address recipient, uint128 amount, uint256 secretHash, uint32 timelock) public returns (address newBox){
         require(msg.sender != address(0), Errors.INVALID_CALLER);
-        require (msg.value >= amount * 1 ton, Errors.INVALID_VALUE);
+        require (msg.value >= amount * 1 ton + Fees.DEPLOY + Fees.PROCESS_SM, Errors.INVALID_VALUE);
 
         TvmCell state = _buildBoxState(address(this), _deployedBoxesCounter);
         newBox = new Box 
